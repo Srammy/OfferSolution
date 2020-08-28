@@ -20,6 +20,7 @@ public class Solution {
             pre = cur;
             cur = temp;
         }
+		// 迭代结束后，pre指向头结点
         return pre;
     }
 }
