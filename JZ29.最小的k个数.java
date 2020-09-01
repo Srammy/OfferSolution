@@ -124,3 +124,91 @@ class Solution {
 
 // 链接：https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/solution/3chong-jie-fa-miao-sha-topkkuai-pai-dui-er-cha-sou/
 
+//+++++++++++++++++++++++++++++++++剑指offer上的实现++++++++++++++++++++++++++++++++
+//=============================方法1====================================
+import java.util.*;
+public class Solution {
+    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
+        if (input == null || input.length == 0 || k <= 0 || k > input.length) {
+            return new ArrayList<>();
+        }
+        
+        ArrayList<Integer> res = new ArrayList<>();
+        
+        getPartionArray(input, 0, input.length - 1, k - 1);
+        
+        for (int i = 0; i < k; i++) {
+            res.add(input[i]);
+        }
+        
+        return res;
+    }
+    
+    private void getPartionArray(int[] input, int left, int right, int k) {
+        int pivot = getPivot(input, left, right);
+        if (pivot == k) return;
+        else if (pivot < k) getPartionArray(input, pivot + 1, right, k);
+        else getPartionArray(input, left, pivot - 1, k);
+    }
+    
+    private int getPivot(int[] input, int left, int right) {
+        int i = left;
+        int j = right;
+        int temp = input[left];
+        
+        while (i < j) {
+            while (i < j && input[j] >= temp) {
+                j--;
+            }
+            if (i < j) {
+                input[i] = input[j];
+                i++;
+            }
+            
+            while (i < j && input[i] < temp) {
+                i++;
+            }
+            if (i < j) {
+                input[j] = input[i];
+                j--;
+            }
+        }
+        input[i] = temp;
+        return i;
+    }
+}
+//===========================方法2==========================================================
+import java.util.*;
+public class Solution {
+    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
+        if (input == null || input.length == 0 || k <= 0 || k > input.length) {
+            return new ArrayList<>();
+        }
+        
+        ArrayList<Integer> res = new ArrayList<>();
+        
+        Queue<Integer> maxHeap = new PriorityQueue<>(k, new Comparator<Integer>(){
+            @Override
+            public int compare(Integer i1,Integer i2){
+                return i2-i1;
+            }
+        });
+        
+        for (int i : input) {
+            if (maxHeap.isEmpty() || maxHeap.size() <= k || i < maxHeap.peek()) {
+                maxHeap.offer(i);
+            }
+            
+            if (maxHeap.size() > k) {
+                maxHeap.poll(); // 弹出最大值
+            }
+        }
+        
+        for (int i : maxHeap) {
+            res.add(i);
+        }
+        
+        return res;
+    }
+
+}
