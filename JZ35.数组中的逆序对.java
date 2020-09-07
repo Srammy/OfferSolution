@@ -1,7 +1,11 @@
 //+++++++++++++++++++++++++++++++++++++LeetCode上的实现++++++++++++++++++++++++++++++++++++++
 //===============剑指 Offer 51. 数组中的逆序对===========================
-// 归并排序
-// 在”并“的过程中计算逆序对数
+/**
+归并排序
+在”并“的过程中计算逆序对数
+方法1和方法2只是用了两种不同的归并排序写法，本质上是一样的
+*/
+//-------------------------------方法1--------------------------------------
 class Solution {
     public int reversePairs(int[] nums) {
         if (nums == null || nums.length < 2) {
@@ -86,3 +90,53 @@ class Solution {
 
 
 //链接：https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/solution/shu-zu-zhong-de-ni-xu-dui-by-leetcode-solution/
+
+//------------------------------方法2------------------------------------------------------
+class Solution {
+    public int reversePairs(int[] nums) {
+        if (nums == null || nums.length < 2) {
+            return 0;
+        }
+        
+        return MergeSort(nums, 0, nums.length-1);
+    }
+
+    private int MergeSort(int[] array, int start, int end){
+        if(start>=end) return 0;
+        int mid = (start+end)/2;
+        int leftCount = MergeSort(array, start, mid);
+        int rightCount = MergeSort(array, mid+1, end);
+        
+        if (array[mid] < array[mid + 1]) {
+            return leftCount + rightCount;
+        }
+        
+        int crossPairs = MergeOne(array, start, mid, end);
+        return leftCount + rightCount + crossPairs;
+    }
+    
+    private int MergeOne(int[] array, int start, int mid, int end) {
+        int[] temp = new int[end-start+1];
+        int k=0,i=start,j=mid+1;
+        int count = 0;
+        while(i<=mid && j<= end) { 
+            //如果前面的元素小于后面的不能构成逆序对
+            if(array[i] <= array[j]) {
+                temp[k++] = array[i++];
+            } else {  //如果前面的元素大于后面的，那么在前面元素之后的元素都能和后面的元素构成逆序对
+                temp[k++] = array[j++];
+                count = count + (mid-i+1);
+            }
+        }
+        while(i<= mid)
+            temp[k++] = array[i++];
+        while(j<=end)
+            temp[k++] = array[j++];
+        for(int l=0; l<k; l++) { 
+            array[start+l] = temp[l];
+        }
+        
+        return count;
+    }
+}
+
