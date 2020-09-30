@@ -30,7 +30,7 @@ class Solution {
 // 链接：https://leetcode-cn.com/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof/solution/mian-shi-ti-59-i-hua-dong-chuang-kou-de-zui-da-1-6/
 
 //=========================剑指offer上的实现=====================
-// 采用了大顶堆来实现
+// 采用了大顶堆来实现（在leetcode239题上，解法超时）
 import java.util.*;
 public class Solution {
     public ArrayList<Integer> maxInWindows(int [] num, int size) {
