@@ -104,3 +104,69 @@ private int sum(int i, int j) {
 }
 
 //链接：https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/solution/dfshe-bfsliang-chong-jie-jue-fang-shi-by-sdwwld/
+
+//===========================剑指offer====================================
+import java.util.*;
+public class Solution {
+    public int movingCount(int threshold, int rows, int cols)
+    {
+        
+        if (threshold < 0) {
+            return 0;
+        }
+        
+        int m = rows;
+        int n = cols;
+        int k = threshold;
+        
+        int[][] matrix = new int[m][n];
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{0, 0});
+        matrix[0][0] = 1;
+        int step = 0;
+        int everyLevelSize = 0;
+        int[][] moves = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        while (!q.isEmpty()) {
+            step++; // 每访问一个点，step就+1
+            int[] cur = q.poll();
+            int row = cur[0];
+            int col = cur[1];
+
+            for (int[] move : moves) {
+                int nextRow = row + move[0];
+                int nextCol = col + move[1];
+
+                if (checkBound(nextRow, nextCol, m, n) && matrix[nextRow][nextCol] != 1 && checkRowAndColSum(nextRow, nextCol, k)) {
+                    matrix[nextRow][nextCol] = 1;
+                    q.offer(new int[]{nextRow, nextCol});
+                }  
+            }
+            
+        }
+
+        return step;
+    }
+    
+    private boolean checkBound (int nextRow, int nextCol, int m, int n) {
+        if (0 <= nextRow && nextRow < m && nextCol >= 0 && nextCol < n) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    private boolean checkRowAndColSum(int row, int col, int target) {
+        int sum = 0;
+        while (row != 0) {
+            sum += row % 10;
+            row /= 10;
+        }
+        while (col != 0) {
+            sum += col % 10;
+            col /= 10;
+        }
+
+        return sum <= target ? true : false;
+    }
+}
