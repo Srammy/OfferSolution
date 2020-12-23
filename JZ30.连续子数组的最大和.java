@@ -1,7 +1,7 @@
 import java.util.*;
 public class Solution {
     public int FindGreatestSumOfSubArray(int[] array) {
-        int[] dp = new int[array.length];  // dp数组的含义是:dp[i]表示到array[i]为止，所有子数组的和的最大值
+        int[] dp = new int[array.length];  // dp数组的含义是:dp[i]表示到array[i]为止，所有子数组的和的最大值； array[i] 为结尾的「最大子数组和」为 dp[i]
         
         Arrays.fill(dp, Integer.MIN_VALUE);
         
